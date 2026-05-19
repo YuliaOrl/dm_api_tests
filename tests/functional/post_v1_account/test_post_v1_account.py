@@ -10,7 +10,7 @@ def test_post_v1_account():
     login_api = LoginApi(host='http://185.185.143.231:5051')
     mailhog_api = MailhogApi(host='http://185.185.143.231:5025')
 
-    login = 'Olga_' + str(randint(10000, 99999))
+    login = 'Zola_' + str(randint(10000, 99999))
     password = '987654321'
     email = f'{login}@yandex.ru'
 
