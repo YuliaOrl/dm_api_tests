@@ -67,7 +67,9 @@ class AccountHelper:
         return response
 
     def user_activation(self, login: str):
-        token = self.get_activation_token_by_login(login)
+        response = self.mailhog.mailhog_api.get_api_v2_messages()
+        assert response.status_code == 200, 'Письма не были получены'
+        token = self.get_activation_token_by_login(login, response)
         assert token is not None, f'Токен для пользователя {login} не был получен'
         response = self.dm_account_api.account_api.put_v1_account_token(token=token)
         assert response.status_code == 200, f'Пользователь {login} не был активирован'
@@ -75,9 +77,8 @@ class AccountHelper:
 
     # Получение активационного токена
     @retrier
-    def get_activation_token_by_login(self, login: str):
+    def get_activation_token_by_login(self, login):
         response = self.mailhog.mailhog_api.get_api_v2_messages()
-        assert response.status_code == 200, 'Письма не были получены'
         for item in response.json().get('items', []):
             user_data = loads(item.get('Content', {}).get('Body'))
             if user_data.get('Login') == login:
@@ -86,3 +87,4 @@ class AccountHelper:
                     print(f'Login: {login}, token: {token}')
                     return token
         return None
+
