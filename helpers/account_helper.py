@@ -75,8 +75,9 @@ class AccountHelper:
 
     # Получение активационного токена
     @retrier
-    def get_activation_token_by_login(self, login):
+    def get_activation_token_by_login(self, login: str):
         response = self.mailhog.mailhog_api.get_api_v2_messages()
+        assert response.status_code == 200, 'Письма не были получены'
         for item in response.json().get('items', []):
             user_data = loads(item.get('Content', {}).get('Body'))
             if user_data.get('Login') == login:
@@ -85,4 +86,3 @@ class AccountHelper:
                     print(f'Login: {login}, token: {token}')
                     return token
         return None
-
