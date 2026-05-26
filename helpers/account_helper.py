@@ -48,24 +48,14 @@ class AccountHelper:
         response = self.user_activation(login=login)
         return response
 
-    def user_login(self, login: str, password: str, remember_me: bool = True):
+    def user_login(self, login: str, password: str, remember_me: bool = True, expected_status: int = 200):
         json_data_login = {
             'login': login,
             'password': password,
             'rememberMe': remember_me,
         }
         response = self.dm_account_api.login_api.post_v1_account_login(json_data=json_data_login)
-        assert response.status_code == 200, f'Пользователь не был авторизован'
-        return response
-
-    def user_inactive_login(self, login: str, password: str):
-        json_data_login = {
-            'login': login,
-            'password': password,
-            'rememberMe': True,
-        }
-        response = self.dm_account_api.login_api.post_v1_account_login(json_data=json_data_login)
-        assert response.status_code == 403, f'Oшибка 403 не была получена, получен статус код {response.status_code}'
+        assert response.status_code == expected_status, f'Ожидается статус код {expected_status}, получен {response.status_code}'
         return response
 
     def get_current_user(self):
@@ -83,7 +73,7 @@ class AccountHelper:
         assert response.status_code == 200, f'Eмейл для пользователя {login} не был изменен'
         return response
 
-    def change_password(self, login: str, password: str, email: str, new_password: str, auth_token: str):
+    def change_password(self, login: str, password: str, email: str, new_password: str):
         json_data = {
             'login': login,
             'email': email
@@ -98,7 +88,7 @@ class AccountHelper:
             "oldPassword": password,
             "newPassword": new_password
         }
-        response = self.dm_account_api.account_api.put_v1_account_password(auth_token=auth_token, json_data=json_data_new)
+        response = self.dm_account_api.account_api.put_v1_account_password(json_data=json_data_new)
         assert response.status_code == 200, f'Пароль для пользователя {login} не был изменен'
         return response
 

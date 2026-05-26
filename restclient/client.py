@@ -37,15 +37,26 @@ class RestClient:
             rest_response = self.session.request(method=method, url=full_url, **kwargs)
             return rest_response
 
-        log.msg(event='Request', method=method, full_url=full_url, params=kwargs.get('params'),
-            headers=kwargs.get('headers'), json=kwargs.get('json'), data=kwargs.get('data'))
+        log.msg(
+            event='Request',
+            method=method,
+            full_url=full_url,
+            params=kwargs.get('params'),
+            headers=kwargs.get('headers'),
+            json=kwargs.get('json'),
+            data=kwargs.get('data'),
+        )
 
         rest_response = self.session.request(method=method, url=full_url, **kwargs)
         curl = curlify.to_curl(rest_response.request)
         print(curl)
 
-        log.msg(event='Response', status_code=rest_response.status_code, headers=rest_response.headers,
-            json=self._get_json(rest_response))
+        log.msg(
+            event='Response',
+            status_code=rest_response.status_code,
+            headers=rest_response.headers,
+            json=self._get_json(rest_response),
+        )
         return rest_response
 
     @staticmethod
