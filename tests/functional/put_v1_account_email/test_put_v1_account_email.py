@@ -29,8 +29,11 @@ def test_put_v1_account_email():
     login = 'Zolushka_' + str(randint(10000, 99999))
     password = '135792468'
     email = f'{login}@yandex.ru'
+    new_email = email.replace('@', '_new_email@')
 
     account_helper.register_new_user(login=login, password=password, email=email)
     account_helper.user_login(login=login, password=password)
-    account_helper.change_email(login=login, password=password, email=email)
+    account_helper.change_email(login=login, password=password, new_email=new_email)
+    account_helper.user_inactive_login(login=login, password=password)
+    account_helper.user_activation(login=login)
     account_helper.user_login(login=login, password=password)
