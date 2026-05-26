@@ -3,6 +3,23 @@ from services.dm_api_account import DMApiAccount
 from services.api_mailhog import MailHogApi
 
 
+def retrier(function):
+    def wrapper(*args, **kwargs):
+        token = None
+        cnt = 1
+        while token is None:
+            print(f'Попытка получения токена номер {cnt}!')
+            token = function(*args, **kwargs)
+            cnt += 1
+            if cnt == 6:
+                raise AssertionError('Превышено количество попыток получения токена активации!')
+            if token:
+                return token
+            time.sleep(1)
+
+    return wrapper
+
+
 class AccountHelper:
     def __init__(self, dm_account_api: DMApiAccount, mailhog: MailHogApi):
         self.dm_account_api = dm_account_api
@@ -57,6 +74,7 @@ class AccountHelper:
         return response
 
     # Получение активационного токена
+    @retrier
     def get_activation_token_by_login(self, login: str):
         response = self.mailhog.mailhog_api.get_api_v2_messages()
         assert response.status_code == 200, 'Письма не были получены'
