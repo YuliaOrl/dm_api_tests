@@ -9,10 +9,14 @@ from restclient.configuration import Configuration
 class RestClient:
     def __init__(self, configuration: Configuration):
         self.host = configuration.host
-        self.headers = configuration.headers
+        self.set_headers(configuration.headers)
         self.disable_log = configuration.disable_log
         self.session = session()
         self.log = structlog.get_logger(__name__).bind(service='api')
+
+    def set_headers(self, headers):
+        if headers:
+            self.session.headers.update(headers)
 
     def post(self, path, **kwargs):
         return self._send_request(method='POST', path=path, **kwargs)
@@ -40,7 +44,7 @@ class RestClient:
             params=kwargs.get('params'),
             headers=kwargs.get('headers'),
             json=kwargs.get('json'),
-            data=kwargs.get('data')
+            data=kwargs.get('data'),
         )
 
         rest_response = self.session.request(method=method, url=full_url, **kwargs)
@@ -51,7 +55,7 @@ class RestClient:
             event='Response',
             status_code=rest_response.status_code,
             headers=rest_response.headers,
-            json=self._get_json(rest_response)
+            json=self._get_json(rest_response),
         )
         return rest_response
 
