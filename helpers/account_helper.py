@@ -1,4 +1,5 @@
 import time
+from collections import namedtuple
 from json import loads
 from dm_api_account.models.change_email import ChangeEmail
 from dm_api_account.models.change_password import ChangePassword
@@ -22,7 +23,6 @@ def retrier(function):
             if token:
                 return token
             time.sleep(1)
-
     return wrapper
 
 
@@ -30,6 +30,7 @@ class AccountHelper:
     def __init__(self, dm_account_api: DMApiAccount, mailhog: MailHogApi):
         self.dm_account_api = dm_account_api
         self.mailhog = mailhog
+        self.current_user = None
 
     def auth_client(self, login: str, password: str, validate_response=False):
         login_credentials = LoginCredentials(
@@ -48,6 +49,7 @@ class AccountHelper:
         self.dm_account_api.login_api.set_headers(token)
 
     def register_new_user(self, login: str, password: str, email: str):
+        self.current_user = namedtuple('User', ['login', 'password', 'email'])(login, password, email)
         registration = Registration(
             login=login,
             email=email,
@@ -58,7 +60,7 @@ class AccountHelper:
         response = self.user_activation(login=login)
         return response
 
-    def user_login(self, login: str, password: str, remember_me: bool = True, expected_status: int = 200, validate_response=False):
+    def user_login(self, login: str, password: str, remember_me: bool = True, validate_response=True, validate_headers=False):
         login_credentials = LoginCredentials(
             login=login,
             password=password,
@@ -68,9 +70,8 @@ class AccountHelper:
             login_credentials=login_credentials,
             validate_response=validate_response
         )
-        if expected_status == 200:
+        if validate_headers and not validate_response:
             assert response.headers['x-dm-auth-token'], f'Токен для пользователя {login} не был получен'
-        assert response.status_code == expected_status, f'Ожидается статус код {expected_status}, получен {response.status_code}'
         return response
 
     def get_current_user(self):

@@ -63,7 +63,7 @@ class UserDetails(BaseModel):
     online: datetime = Field(None)
     name: str = Field(None)
     location: str = Field(None)
-    registration: str = Field(None)
+    registration: datetime = Field(None)
     icq: str = Field(None)
     skype: str = Field(None)
     original_picture_url: str = Field(None, alias='originalPictureUrl')
