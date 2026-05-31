@@ -19,14 +19,14 @@ structlog.configure(
 )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def account_api():
     dm_api_configuration = DMApiConfiguration(host='http://185.185.143.231:5051', disable_log=False)
     account = DMApiAccount(configuration=dm_api_configuration)
     return account
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def mailhog_api():
     mailhog_configuration = MailhogConfiguration(host='http://185.185.143.231:5025')
     mailhog_client = MailHogApi(configuration=mailhog_configuration)

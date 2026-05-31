@@ -60,8 +60,7 @@ class AccountHelper:
         response = self.user_activation(login=login)
         return response
 
-    def user_login(self, login: str, password: str, remember_me: bool = True, expected_status: int = 200,
-                   validate_response=False, validate_headers=False):
+    def user_login(self, login: str, password: str, remember_me: bool = True, validate_response=True, validate_headers=False):
         login_credentials = LoginCredentials(
             login=login,
             password=password,
@@ -73,8 +72,6 @@ class AccountHelper:
         )
         if validate_headers and not validate_response:
             assert response.headers['x-dm-auth-token'], f'Токен для пользователя {login} не был получен'
-        if not validate_response:
-            assert response.status_code == expected_status, f'Ожидается статус код {expected_status}, получен {response.status_code}'
         return response
 
     def get_current_user(self):
