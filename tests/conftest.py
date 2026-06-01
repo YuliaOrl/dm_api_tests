@@ -77,9 +77,9 @@ def auth_account_helper(account_api, mailhog_api, prepare_user):
 def prepare_user():
     now = datetime.now()
     time = now.strftime('%H_%M_%S_%f')
-    login = f'{v.get('user.login')}_{time}'
+    login = f"{v.get('user.login')}_{time}"
     password = v.get('user.password')
-    email = f'{login}@yandex.ru'
+    email = f"{login}@yandex.ru"
     User = namedtuple('User', ['login', 'password', 'email'])
     user = User(login=login, password=password, email=email)
     return user
