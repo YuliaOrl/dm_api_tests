@@ -1,11 +1,11 @@
 import time
-from collections import namedtuple
 from json import loads
 from dm_api_account.models.change_email import ChangeEmail
 from dm_api_account.models.change_password import ChangePassword
 from dm_api_account.models.login_credentials import LoginCredentials
 from dm_api_account.models.registration import Registration
 from dm_api_account.models.reset_password import ResetPassword
+from dm_api_account.models.user import User
 from services.dm_api_account import DMApiAccount
 from services.api_mailhog import MailHogApi
 
@@ -30,7 +30,6 @@ class AccountHelper:
     def __init__(self, dm_account_api: DMApiAccount, mailhog: MailHogApi):
         self.dm_account_api = dm_account_api
         self.mailhog = mailhog
-        self.current_user = None
 
     def auth_client(self, login: str, password: str, validate_response=False):
         login_credentials = LoginCredentials(
@@ -49,7 +48,7 @@ class AccountHelper:
         self.dm_account_api.login_api.set_headers(token)
 
     def register_new_user(self, login: str, password: str, email: str):
-        self.current_user = namedtuple('User', ['login', 'password', 'email'])(login, password, email)
+        user = User(login=login, password=password, email=email)
         registration = Registration(
             login=login,
             email=email,
@@ -57,8 +56,8 @@ class AccountHelper:
         )
         response = self.dm_account_api.account_api.post_v1_account(registration=registration)
         assert response.status_code == 201, f'Пользователь не был создан {response.json()}'
-        response = self.user_activation(login=login)
-        return response
+        self.user_activation(login=login)
+        return user
 
     def user_login(self, login: str, password: str, remember_me: bool = True, validate_response=True, validate_headers=False):
         login_credentials = LoginCredentials(
