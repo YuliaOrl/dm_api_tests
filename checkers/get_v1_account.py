@@ -5,7 +5,7 @@ from hamcrest import (assert_that, has_property, has_properties, anything, is_in
 class GetV1Account:
 
     @classmethod
-    def check_response_values(cls, auth_account_helper, response):
+    def check_response_values(cls, response, prepare_user):
         assert_that(
             response, has_property(
                 'resource', has_properties({
@@ -19,7 +19,7 @@ class GetV1Account:
                             'messages_per_page': equal_to(10),
                             'entities_per_page': equal_to(10)
                     })}),
-                    'login': equal_to(auth_account_helper.current_user.login),
+                    'login': equal_to(prepare_user.login),
                     'roles': only_contains('Guest', 'Player', 'Administrator', 'NannyModerator', 'RegularModerator', 'SeniorModerator'),
                     'rating': has_properties({
                         'enabled': equal_to(True),
