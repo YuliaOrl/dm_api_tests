@@ -5,6 +5,7 @@ from dm_api_account.models.change_password import ChangePassword
 from dm_api_account.models.login_credentials import LoginCredentials
 from dm_api_account.models.registration import Registration
 from dm_api_account.models.reset_password import ResetPassword
+from dm_api_account.models.user import User
 from services.dm_api_account import DMApiAccount
 from services.api_mailhog import MailHogApi
 
@@ -22,7 +23,6 @@ def retrier(function):
             if token:
                 return token
             time.sleep(1)
-
     return wrapper
 
 
@@ -48,6 +48,7 @@ class AccountHelper:
         self.dm_account_api.login_api.set_headers(token)
 
     def register_new_user(self, login: str, password: str, email: str):
+        user = User(login=login, password=password, email=email)
         registration = Registration(
             login=login,
             email=email,
@@ -55,10 +56,11 @@ class AccountHelper:
         )
         response = self.dm_account_api.account_api.post_v1_account(registration=registration)
         assert response.status_code == 201, f'Пользователь не был создан {response.json()}'
-        response = self.user_activation(login=login)
-        return response
+        self.user_activation(login=login)
+        return user
 
-    def user_login(self, login: str, password: str, remember_me: bool = True, expected_status: int = 200, validate_response=False):
+    def user_login(self, login: str, password: str, remember_me: bool = True, expected_status: int = 200,
+                   validate_response=False, validate_headers=False):
         login_credentials = LoginCredentials(
             login=login,
             password=password,
@@ -68,9 +70,10 @@ class AccountHelper:
             login_credentials=login_credentials,
             validate_response=validate_response
         )
-        if expected_status == 200:
+        if validate_headers and not validate_response:
             assert response.headers['x-dm-auth-token'], f'Токен для пользователя {login} не был получен'
-        assert response.status_code == expected_status, f'Ожидается статус код {expected_status}, получен {response.status_code}'
+        if not validate_response:
+            assert response.status_code == expected_status, f'Ожидается статус код {expected_status}, получен {response.status_code}'
         return response
 
     def get_current_user(self):
