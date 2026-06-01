@@ -3,7 +3,7 @@ from hamcrest import (assert_that, has_property, has_properties, all_of, equal_t
 from checkers.http_checkers import check_status_code_http
 
 
-def test_get_v1_account_auth(auth_account_helper):
+def test_get_v1_account_auth(auth_account_helper, prepare_user):
     # Позитивная проверка получения информации о пользователе
     with check_status_code_http():
         response = auth_account_helper.get_current_user()
@@ -21,7 +21,7 @@ def test_get_v1_account_auth(auth_account_helper):
                             'entities_per_page': equal_to(10)
                         })
                     }),
-                    'login': equal_to(auth_account_helper.current_user.login),
+                    'login': equal_to(prepare_user.login),
                     'roles': only_contains('Guest', 'Player', 'Administrator', 'NannyModerator', 'RegularModerator', 'SeniorModerator'),
                     'rating': has_properties({
                         'enabled': equal_to(True),
