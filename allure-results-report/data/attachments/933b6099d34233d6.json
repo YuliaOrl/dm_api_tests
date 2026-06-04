@@ -1,0 +1,14 @@
+{
+    "resource": {
+        "login": "Zolushka_10_42_27_091118",
+        "roles": [
+            "Guest",
+            "Player"
+        ],
+        "rating": {
+            "enabled": true,
+            "quality": 0,
+            "quantity": 0
+        }
+    }
+}

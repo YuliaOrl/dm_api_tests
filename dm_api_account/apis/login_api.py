@@ -1,10 +1,12 @@
+import allure
 from dm_api_account.models.login_credentials import LoginCredentials
 from dm_api_account.models.user_envelope import UserEnvelope
 from restclient.client import RestClient
 
 
 class LoginApi(RestClient):
-    # Авторизация пользователя
+
+    @allure.step('Авторизация пользователя')
     def post_v1_account_login(self, login_credentials: LoginCredentials, validate_response=True):
         '''
         Authenticate via credentials
@@ -20,7 +22,7 @@ class LoginApi(RestClient):
             return UserEnvelope(**response.json())
         return response
 
-    # Выход авторизованного пользователя из аккаунта
+    @allure.step('Выход авторизованного пользователя из аккаунта')
     def delete_v1_account_login(self, **kwargs):
         '''
         Logout as current user
@@ -33,7 +35,7 @@ class LoginApi(RestClient):
         )
         return response
 
-    # Выход авторизованного пользователя из аккаунта на всех устройствах
+    @allure.step('Выход авторизованного пользователя из аккаунта на всех устройствах')
     def delete_v1_account_login_all(self, **kwargs):
         '''
         Logout from every device

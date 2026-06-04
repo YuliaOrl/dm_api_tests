@@ -1,0 +1,1 @@
+curl -H 'User-Agent: python-requests/2.33.1' -H 'Accept-Encoding: gzip, deflate, zstd' -H 'Accept: */*' -H 'Connection: keep-alive' -H 'Content-Length: 82' -H 'Content-Type: application/json' -d '{"login": "Zolushka_10_42_26_749075", "password": "123456789", "rememberMe": true}' http://185.185.143.231:5051/v1/account/login

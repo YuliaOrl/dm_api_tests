@@ -1,0 +1,34 @@
+{
+    "service": "api",
+    "event_id": "28a4b400-1bc4-4f25-8201-d73c08110e4a",
+    "method": "POST",
+    "full_url": "http://185.185.143.231:5051/v1/account",
+    "params": null,
+    "headers": null,
+    "json": {
+        "login": "Testov_10_42_22_534873",
+        "password": "12345",
+        "email": "Testov_10_42_22_534873@yandex.ru"
+    },
+    "data": null,
+    "event": "Request"
+}
+curl -H 'User-Agent: python-requests/2.33.1' -H 'Accept-Encoding: gzip, deflate, zstd' -H 'Accept: */*' -H 'Connection: keep-alive' -H 'Content-Length: 101' -H 'Content-Type: application/json' -d '{"login": "Testov_10_42_22_534873", "password": "12345", "email": "Testov_10_42_22_534873@yandex.ru"}' http://185.185.143.231:5051/v1/account
+{
+    "service": "api",
+    "event_id": "28a4b400-1bc4-4f25-8201-d73c08110e4a",
+    "status_code": 400,
+    "headers": "{'Content-Type': 'application/json; charset=utf-8', 'Date': 'Thu, 04 Jun 2026 07:42:25 GMT', 'Server': 'Kestrel', 'Transfer-Encoding': 'chunked'}",
+    "json": {
+        "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+        "title": "Validation failed",
+        "status": 400,
+        "traceId": "00-9e80ca060c1ee3c3cb1a5566d5ef713e-979d6c728cf251d4-01",
+        "errors": {
+            "Password": [
+                "Short"
+            ]
+        }
+    },
+    "event": "Response"
+}

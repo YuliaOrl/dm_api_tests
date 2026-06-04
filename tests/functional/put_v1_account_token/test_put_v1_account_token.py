@@ -1,6 +1,17 @@
-def test_put_v1_account_token(account_helper, prepare_user):
-    # Проверка активации пользователя
-    login, password, email = prepare_user.login, prepare_user.password, prepare_user.email
+import allure
 
-    account_helper.register_new_user(login=login, password=password, email=email)
-    account_helper.user_login(login=login, password=password)
+
+@allure.epic('DM.API Account')
+@allure.parent_suite('Функциональные тесты')
+@allure.suite('Тесты на проверку метода PUT v1/account/token')
+@allure.sub_suite('Позитивные тесты')
+class TestPutV1AccountToken:
+
+    @allure.title('Проверка активации пользователя')
+    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.description('Тест проверяет создание нового пользователя, его успешную активацию и последующую авторизацию.')
+    def test_put_v1_account_token(self, account_helper, prepare_user):
+        login, password, email = prepare_user.login, prepare_user.password, prepare_user.email
+
+        account_helper.register_new_user(login=login, password=password, email=email)
+        account_helper.user_login(login=login, password=password)

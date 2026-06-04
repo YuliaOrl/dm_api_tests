@@ -1,0 +1,99 @@
+{
+    "service": "api",
+    "event_id": "55248df0-0c2b-4ea7-a8d6-7c1c0534320e",
+    "method": "POST",
+    "full_url": "http://185.185.143.231:5051/v1/account",
+    "params": null,
+    "headers": null,
+    "json": {
+        "login": "Zolushka_10_42_26_749075",
+        "password": "123456789",
+        "email": "Zolushka_10_42_26_749075@yandex.ru"
+    },
+    "data": null,
+    "event": "Request"
+}
+curl -H 'User-Agent: python-requests/2.33.1' -H 'Accept-Encoding: gzip, deflate, zstd' -H 'Accept: */*' -H 'Connection: keep-alive' -H 'Content-Length: 109' -H 'Content-Type: application/json' -d '{"login": "Zolushka_10_42_26_749075", "password": "123456789", "email": "Zolushka_10_42_26_749075@yandex.ru"}' http://185.185.143.231:5051/v1/account
+{
+    "service": "api",
+    "event_id": "55248df0-0c2b-4ea7-a8d6-7c1c0534320e",
+    "status_code": 201,
+    "headers": "{'Content-Length': '0', 'Date': 'Thu, 04 Jun 2026 07:42:26 GMT', 'Server': 'Kestrel', 'Location': 'http://185.185.143.231:5051/v1/users/Zolushka_10_42_26_749075'}",
+    "json": {},
+    "event": "Response"
+}
+Попытка получения токена номер 1!
+Login: Zolushka_10_42_26_749075, token: b0835272-9cee-4acb-9b08-6321761d2ab1
+{
+    "service": "api",
+    "event_id": "fa05dc9a-7a0c-4e0d-9a54-0f964faf8eb8",
+    "method": "PUT",
+    "full_url": "http://185.185.143.231:5051/v1/account/b0835272-9cee-4acb-9b08-6321761d2ab1",
+    "params": null,
+    "headers": {
+        "accept": "text/plain"
+    },
+    "json": null,
+    "data": null,
+    "event": "Request"
+}
+curl -X PUT -H 'User-Agent: python-requests/2.33.1' -H 'Accept-Encoding: gzip, deflate, zstd' -H 'accept: text/plain' -H 'Connection: keep-alive' -H 'Content-Length: 0' http://185.185.143.231:5051/v1/account/b0835272-9cee-4acb-9b08-6321761d2ab1
+{
+    "service": "api",
+    "event_id": "fa05dc9a-7a0c-4e0d-9a54-0f964faf8eb8",
+    "status_code": 200,
+    "headers": "{'Content-Type': 'application/json; charset=utf-8', 'Date': 'Thu, 04 Jun 2026 07:42:26 GMT', 'Server': 'Kestrel', 'Transfer-Encoding': 'chunked'}",
+    "json": {
+        "resource": {
+            "login": "Zolushka_10_42_26_749075",
+            "roles": [
+                "Guest",
+                "Player"
+            ],
+            "rating": {
+                "enabled": true,
+                "quality": 0,
+                "quantity": 0
+            }
+        }
+    },
+    "event": "Response"
+}
+{
+    "service": "api",
+    "event_id": "26e7bbd8-bf61-4a12-ab1d-d9aa59f0ab9c",
+    "method": "POST",
+    "full_url": "http://185.185.143.231:5051/v1/account/login",
+    "params": null,
+    "headers": null,
+    "json": {
+        "login": "Zolushka_10_42_26_749075",
+        "password": "123456789",
+        "rememberMe": true
+    },
+    "data": null,
+    "event": "Request"
+}
+curl -H 'User-Agent: python-requests/2.33.1' -H 'Accept-Encoding: gzip, deflate, zstd' -H 'Accept: */*' -H 'Connection: keep-alive' -H 'Content-Length: 82' -H 'Content-Type: application/json' -d '{"login": "Zolushka_10_42_26_749075", "password": "123456789", "rememberMe": true}' http://185.185.143.231:5051/v1/account/login
+{
+    "service": "api",
+    "event_id": "26e7bbd8-bf61-4a12-ab1d-d9aa59f0ab9c",
+    "status_code": 200,
+    "headers": "{'Content-Type': 'application/json; charset=utf-8', 'Date': 'Thu, 04 Jun 2026 07:42:26 GMT', 'Server': 'Kestrel', 'Transfer-Encoding': 'chunked', 'X-Dm-Auth-Token': 'IQJh+zgzF5BOTClSm0Dzh2XIDYesI/x/Bc/zzQByExxvRIgtrsbHa0NiR+RIZeGs2vvkf9r7RIq1mhwf4p2C8NTqfaY2f4TjRhYz9INyffQ+ixIfdCtZepYpKTkhEufFcBNEXuQCTvI='}",
+    "json": {
+        "resource": {
+            "login": "Zolushka_10_42_26_749075",
+            "roles": [
+                "Guest",
+                "Player"
+            ],
+            "rating": {
+                "enabled": true,
+                "quality": 0,
+                "quantity": 0
+            },
+            "registration": "2026-06-04T07:42:26.905736+00:00"
+        }
+    },
+    "event": "Response"
+}

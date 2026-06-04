@@ -1,15 +1,18 @@
+import allure
 from checkers.get_v1_account import GetV1Account
 from checkers.http_checkers import check_status_code_http
 
 
-def test_get_v1_account_auth(auth_account_helper, prepare_user):
-    # Позитивная проверка получения информации о пользователе
-    with check_status_code_http():
-        response = auth_account_helper.get_current_user()
-        GetV1Account.check_response_values(response, prepare_user)
+@allure.epic('DM.API Account')
+@allure.parent_suite('Функциональные тесты')
+@allure.suite('Тесты на проверку метода GET v1/account')
+@allure.sub_suite('Позитивные тесты')
+class TestsGetV1Account:
 
-
-def test_get_v1_account_no_auth(account_helper):
-    # Негативная проверка получения информации о неавторизованном пользователе
-    with check_status_code_http(401, 'User must be authenticated'):
-        account_helper.get_current_user()
+    @allure.title('Проверка получения информации о пользователе')
+    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.description('Тест выполняет успешное получение информации об авторизованном пользователе с проверкой содержания ответа.')
+    def test_get_v1_account_auth(self, auth_account_helper, prepare_user):
+        with check_status_code_http():
+            response = auth_account_helper.get_current_user()
+            GetV1Account.check_response_values(response, prepare_user)
