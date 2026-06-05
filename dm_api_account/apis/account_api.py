@@ -1,3 +1,4 @@
+import allure
 from dm_api_account.models.change_email import ChangeEmail
 from dm_api_account.models.change_password import ChangePassword
 from dm_api_account.models.registration import Registration
@@ -8,7 +9,8 @@ from restclient.client import RestClient
 
 
 class AccountApi(RestClient):
-    # Регистрация пользователя
+
+    @allure.step('Регистрация нового пользователя')
     def post_v1_account(self, registration: Registration):
         '''
         Register new user
@@ -21,7 +23,7 @@ class AccountApi(RestClient):
         )
         return response
 
-    # Получение пользователя
+    @allure.step('Получение информации о пользователе')
     def get_v1_account(self, validate_response=True, **kwargs):
         '''
         Get current user
@@ -37,7 +39,7 @@ class AccountApi(RestClient):
             return UserDetailsEnvelope(**response.json())
         return response
 
-    # Активация пользователя
+    @allure.step('Активация пользователя')
     def put_v1_account_token(self, token, validate_response=True):
         '''
         Activate registered user
@@ -56,7 +58,7 @@ class AccountApi(RestClient):
             return UserEnvelope(**response.json())
         return response
 
-    # Сброс пароля для зарегестрированного пользователя
+    @allure.step('Сброс пароля для зарегистрированного пользователя')
     def post_v1_account_password(self, reset_password: ResetPassword, validate_response=True):
         '''
         Reset registered user password
@@ -77,6 +79,7 @@ class AccountApi(RestClient):
             return UserEnvelope(**response.json())
         return response
 
+    @allure.step('Изменение пароля зарегистрированного пользователя')
     def put_v1_account_password(self, change_password: ChangePassword, validate_response=True, **kwargs):
         '''
         Change registered user password
@@ -94,7 +97,7 @@ class AccountApi(RestClient):
             return UserEnvelope(**response.json())
         return response
 
-    # Изменение емейла
+    @allure.step('Изменение емейла')
     def put_v1_account_email(self, change_email: ChangeEmail, validate_response=True):
         '''
         Change registered user email
