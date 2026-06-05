@@ -1,5 +1,4 @@
-import traceback
-
+import os
 import pytest
 from datetime import datetime
 from collections import namedtuple
@@ -7,8 +6,8 @@ from swagger_coverage_py.reporter import CoverageReporter
 from vyper import v
 from pathlib import Path
 from helpers.account_helper import AccountHelper
-from restclient.configuration import Configuration as MailhogConfiguration
-from restclient.configuration import Configuration as DMApiConfiguration
+from packages.restclient.configuration import Configuration as MailhogConfiguration
+from packages.restclient.configuration import Configuration as DMApiConfiguration
 from services.dm_api_account import DMApiAccount
 from services.api_mailhog import MailHogApi
 import structlog
@@ -28,6 +27,8 @@ options = (
     'service.mailhog',
     'user.login',
     'user.password',
+    'telegram.chat_id',
+    'telegram.token',
 )
 
 
@@ -49,6 +50,10 @@ def set_config(request):
     v.read_in_config()
     for option in options:
         v.set(f'{option}', request.config.getoption(f'--{option}'))
+    os.environ['TELEGRAM_BOT_CHAT_ID'] = v.get('telegram.chat_id')
+    os.environ['TELEGRAM_BOT_ACCESS_TOKEN'] = v.get('telegram.token')
+    request.config.stash['telegram-notifier-addfields']['enviroment'] = config_name
+    request.config.stash['telegram-notifier-addfields']['report'] = 'https://yuliaorl.github.io/dm_api_tests/'
 
 
 def pytest_addoption(parser):

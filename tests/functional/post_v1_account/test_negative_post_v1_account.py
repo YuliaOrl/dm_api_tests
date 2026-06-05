@@ -3,7 +3,7 @@ import allure
 from collections import namedtuple
 from datetime import datetime
 from checkers.http_checkers import check_status_code_http
-from dm_api_account.models.registration import Registration
+from clients.http.dm_api_account.models.registration import Registration
 
 
 def new_user():
