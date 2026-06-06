@@ -13,10 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Install dependencies
         run: |
@@ -25,15 +32,23 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest ./tests --alluredir=allure-results --disable-warnings
+          pytest ./tests --alluredir=allure-results --disable-warnings -s
         continue-on-error: true
-          
+
       - name: Archive allure results
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
           path: allure-results
-          retention-days: 1
+          retention-days: 3
+
+      - name: Archive swagger coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: swagger-coverage-report
+          path: swagger-coverage-output
+          retention-days: 3
 
   generate-report:
     runs-on: ubuntu-latest
