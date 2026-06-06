@@ -180,6 +180,13 @@ allure-results/
 allure-results-report/
 allure-report/
 
+
+# Swagger coverage reports
+swagger-coverage-output/
+swagger-doc-dm-api-account.json
+swagger-coverage-report-dm-api-account.html
+
+
 # Abstra
 # Abstra is an AI-powered process automation framework.
 # Ignore directories containing user credentials, local state, and settings.

@@ -5,3 +5,7 @@ service:
 user:
   login: 'Zolushka'
   password: '123456789'
+
+telegram:
+  chat_id: '-1003721318258'
+  token: '8875901864:AAGyEzbApsTOy1Ajuw79vS4z3uPjHpr-hic'
